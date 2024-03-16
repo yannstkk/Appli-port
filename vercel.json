@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "yannnn",
+    "builds":[
+    {"src": "server.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+    {"src": "/(.*)", "dest": "/server3.js" }
+    ]
+    }
