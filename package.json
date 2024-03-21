@@ -2,10 +2,10 @@
   "name": "web_scraping_api",
   "version": "1.0.0",
   "description": "",
-  "main": "server3.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server3.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
