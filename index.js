@@ -8,7 +8,29 @@ const port = process.env.port || 3004;
 
 app.use(express.json());
 
-// Route pour le scraping des navires sur la page principale
+app.get('/scrapeGeneral', async (req, res) => {
+    const url = 'https://www.portdebejaia.dz/';
+
+    try {
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
+
+        const data = {};
+
+        $('#snav_content ul li').each((index, element) => {
+            const label = $(element).find('.label').text().trim();
+            const nombre = parseInt($(element).find('.nombre').text().trim());
+            data[label] = nombre;
+        });
+
+        res.json(data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to scrape data from the website' });
+    }
+});
+
+
 app.get('/scrapeS3', async (req, res) => {
     const url = 'https://www.portdebejaia.dz/situation-des-navires/#';
 
@@ -32,7 +54,7 @@ app.get('/scrapeS3', async (req, res) => {
             const poste = $(element).find('td').eq(0).text().trim();
             const navireLink = $(element).find('td').eq(0).find('a').attr('href');
             const IMO = navireLink ? navireLink.match(/ship=(\d+)/)[1] : null;
-            naviresRade.push({ poste, IMO });
+            naviresRade.push({ poste, IMO }); //ici poste renvoi le nom plutot
         });
 
         res.json({ naviresQuai, naviresRade });
